@@ -125,7 +125,7 @@ def init_app(app):
                        request.form.get("amount", ""), request.form.get("due_date", ""))
         from flask import redirect, url_for, flash
         flash("Invoice created.")
-        return redirect(url_for("fees.index"))
+        return redirect(url_for("fees_index"))
 
     @app.post("/fees/payments", endpoint="fees_payment_create")
     def payment_create():
@@ -133,7 +133,7 @@ def init_app(app):
                        request.form.get("amount", ""))
         from flask import redirect, url_for, flash
         flash("Payment recorded.")
-        return redirect(url_for("fees.index"))
+        return redirect(url_for("fees_index"))
 
     @app.get("/fees/balances/<int:student_id>", endpoint="fees_balances")
     def balances(student_id):
