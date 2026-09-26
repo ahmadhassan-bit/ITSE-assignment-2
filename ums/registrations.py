@@ -69,7 +69,7 @@ def init_app(app):
         register_student_for_exam(get_db_for_app(), int(request.form["student_id"]),
                                   int(request.form["exam_id"]))
         flash("Student registered for examination.")
-        return redirect(url_for("registrations.index"))
+        return redirect(url_for("registrations_index"))
 
     @app.get("/registrations/<int:registration_id>/admit-card", endpoint="registrations_admit_card")
     def admit_card_view(registration_id):
