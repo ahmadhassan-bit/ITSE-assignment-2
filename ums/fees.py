@@ -113,13 +113,13 @@ def receipt(db, payment_id):
 
 def init_app(app):
     from flask import render_template, request
-    @app.get("/fees")
-    def index():
+    @app.get("/fees", endpoint="fees_index")
+    def fees_index():
         from .students import list_students
         students = list_students(get_db_for_app())
         return render_template("fees.html", students=students)
 
-    @app.post("/fees/invoices")
+    @app.post("/fees/invoices", endpoint="fees_invoice_create")
     def invoice_create():
         create_invoice(get_db_for_app(), int(request.form["student_id"]),
                        request.form.get("amount", ""), request.form.get("due_date", ""))
@@ -127,7 +127,7 @@ def init_app(app):
         flash("Invoice created.")
         return redirect(url_for("fees.index"))
 
-    @app.post("/fees/payments")
+    @app.post("/fees/payments", endpoint="fees_payment_create")
     def payment_create():
         record_payment(get_db_for_app(), int(request.form["invoice_id"]),
                        request.form.get("amount", ""))
@@ -135,11 +135,11 @@ def init_app(app):
         flash("Payment recorded.")
         return redirect(url_for("fees.index"))
 
-    @app.get("/fees/balances/<int:student_id>")
+    @app.get("/fees/balances/<int:student_id>", endpoint="fees_balances")
     def balances(student_id):
         return render_template("balances.html", balances=view_balances(get_db_for_app(), student_id))
 
-    @app.get("/fees/receipts/<int:payment_id>")
+    @app.get("/fees/receipts/<int:payment_id>", endpoint="fees_receipt")
     def receipt_view(payment_id):
         return render_template("receipt.html", receipt=receipt(get_db_for_app(), payment_id))
 

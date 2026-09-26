@@ -56,22 +56,22 @@ def admit_card(db, registration_id):
 
 def init_app(app):
     from flask import render_template, request, redirect, url_for, flash
-    @app.get("/registrations")
-    def index():
+    @app.get("/registrations", endpoint="registrations_index")
+    def registrations_index():
         from .students import list_students
         from .exams import list_exams
         return render_template("registrations.html",
                                students=list_students(get_db_for_app()),
                                exams=list_exams(get_db_for_app()))
 
-    @app.post("/registrations")
+    @app.post("/registrations", endpoint="registrations_register")
     def register():
         register_student_for_exam(get_db_for_app(), int(request.form["student_id"]),
                                   int(request.form["exam_id"]))
         flash("Student registered for examination.")
         return redirect(url_for("registrations.index"))
 
-    @app.get("/registrations/<int:registration_id>/admit-card")
+    @app.get("/registrations/<int:registration_id>/admit-card", endpoint="registrations_admit_card")
     def admit_card_view(registration_id):
         return render_template("admit_card.html", card=admit_card(get_db_for_app(), registration_id))
 
