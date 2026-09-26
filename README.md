@@ -7,7 +7,7 @@ Scope: Student Management, Fee Management, Examination Management.
 ## Team responsibilities
 
 - Ahmad: Product Owner and developer in Sprint 1; Scrum Master and developer in Sprint 2. Leads Student Management.
-- Partner: Scrum Master and developer in Sprint 1; Product Owner and developer in Sprint 2. Leads Fee Management.
+- Saad: Scrum Master and developer in Sprint 1; Product Owner and developer in Sprint 2. Leads Fee Management.
 - Examination Management: shared implementation and review.
 
 ## Work in progress
