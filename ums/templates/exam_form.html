@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block content %}<div class="eyebrow">Examination Management</div><h1>Schedule examination</h1><p class="lead">All times use Pakistan Standard Time. A room cannot have overlapping sessions.</p>
+<form class="panel" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label for="course_code">Course code</label><input id="course_code" name="course_code" required maxlength="200">
+<label for="title">Course title</label><input id="title" name="title" required maxlength="200">
+<label for="starts_at">Start date and time</label><input id="starts_at" name="starts_at" type="datetime-local" required>
+<label for="ends_at">End date and time</label><input id="ends_at" name="ends_at" type="datetime-local" required>
+<label for="room">Room</label><input id="room" name="room" required maxlength="200"><div class="actions"><button>Save examination</button><a href="{{ url_for('exams') }}">Cancel</a></div></form>{% endblock %}
+

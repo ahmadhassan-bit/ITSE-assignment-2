@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}University Management System{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
+<body><header><a class="brand" href="{{ url_for('index') }}"><span class="mark">U</span> University Management System</a>
+<nav><a href="{{ url_for('students') }}">Students</a><a href="{{ url_for('exams') }}">Examinations</a>
+{% if 'fees.index' in endpoints %}<a href="{{ url_for('fees.index') }}">Fees</a>{% endif %}
+{% if 'registrations.index' in endpoints %}<a href="{{ url_for('registrations.index') }}">Candidates</a>{% endif %}</nav></header>
+<main>{% for message in get_flashed_messages() %}<div class="notice" role="status">{{ message }}</div>{% endfor %}
+{% block content %}{% endblock %}</main><footer>Academic demonstration &middot; Examination times in Pakistan Standard Time</footer></body></html>
+

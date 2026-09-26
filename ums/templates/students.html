@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% block content %}<div class="titlebar"><div><div class="eyebrow">Student Management</div><h1>Student records</h1></div><a class="button" href="{{ url_for('student_new') }}">Register student</a></div>
+<form class="search" method="get"><label for="q">Find a student</label><div class="inline"><input id="q" name="q" maxlength="200" value="{{ query }}" placeholder="Name or roll number"><button>Search</button><a href="{{ url_for('students') }}">Clear</a></div></form>
+{% if students %}<div class="tablewrap"><table><thead><tr><th>ID</th><th>Roll number</th><th>Name and email</th><th>Programme</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for s in students %}<tr><td>{{ s.id }}</td><td>{{ s.roll_number }}</td><td><strong>{{ s.name }}</strong><small>{{ s.email }}</small></td><td>{{ s.programme }}</td><td><span class="pill {{ s.status }}">{{ s.status }}</span></td><td><a href="{{ url_for('student_edit',student_id=s.id) }}">Edit</a>
+<form class="inlineform" method="post" action="{{ url_for('student_status',student_id=s.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="status" value="{{ 'inactive' if s.status=='active' else 'active' }}"><button class="textbutton">{{ 'Deactivate' if s.status=='active' else 'Activate' }}</button></form></td></tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="empty"><h2>No students found</h2><p>Try another search or register your first student.</p></div>{% endif %}{% endblock %}
+

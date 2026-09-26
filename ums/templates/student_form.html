@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block content %}<div class="eyebrow">Student Management</div><h1>{{ 'Edit student' if student else 'Register student' }}</h1>
+<p class="lead">{{ 'The student ID and roll number remain unchanged.' if student else 'Enter the student details. Every field is required.' }}</p>
+<form class="panel" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+{% if student %}<p><strong>{{ student.roll_number }}</strong> &middot; Student ID {{ student.id }}</p>{% else %}<label for="roll_number">Roll number</label><input id="roll_number" name="roll_number" required maxlength="200">{% endif %}
+<label for="name">Full name</label><input id="name" name="name" required maxlength="200" value="{{ student.name if student else '' }}">
+<label for="email">Email</label><input id="email" name="email" type="email" required maxlength="200" value="{{ student.email if student else '' }}">
+<label for="programme">Programme</label><input id="programme" name="programme" required maxlength="200" value="{{ student.programme if student else '' }}">
+<div class="actions"><button>{{ 'Save changes' if student else 'Register student' }}</button><a href="{{ url_for('students') }}">Cancel</a></div></form>{% endblock %}
+
