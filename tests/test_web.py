@@ -4,6 +4,9 @@ import tempfile
 import unittest
 
 from ums.db import connect
+from ums.exams import create_exam
+from ums.fees import create_invoice
+from ums.registrations import register_student_for_exam
 from ums.students import create_student, get_student
 from ums.web import create_app
 
@@ -94,3 +97,43 @@ class WebTests(unittest.TestCase):
         response = self.client.post("/exams/new", data=data)
         self.assertEqual(response.status_code, 400)
         self.assertIn("overlapping", response.get_data(as_text=True))
+
+    def test_fee_invoice_form_redirects_and_persists(self):
+        db = connect(self.path)
+        try:
+            student = create_student(db, "F26-FEE1", "Fee Student", "fee@example.test", "BSE")
+        finally:
+            db.close()
+        token = self.token("/fees")
+        response = self.client.post("/fees/invoices", data=dict(
+            student_id=student["id"], amount="1250.50", due_date="2026-10-31", csrf_token=token))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers["Location"], "/fees")
+        db = connect(self.path)
+        try:
+            invoice = db.execute("SELECT amount_paisa, due_date FROM invoices WHERE student_id=?",
+                                 (student["id"],)).fetchone()
+            self.assertEqual(tuple(invoice), (125050, "2026-10-31"))
+        finally:
+            db.close()
+
+    def test_registration_form_redirects_and_admit_card_renders(self):
+        db = connect(self.path)
+        try:
+            student = create_student(db, "F26-EX1", "Exam Student", "exam@example.test", "BSE")
+            exam = create_exam(db, "SE1001", "ITSE", "2026-11-01T09:00", "2026-11-01T11:00", "A1")
+        finally:
+            db.close()
+        token = self.token("/registrations")
+        response = self.client.post("/registrations", data=dict(
+            student_id=student["id"], exam_id=exam["id"], csrf_token=token))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers["Location"], "/registrations")
+        db = connect(self.path)
+        try:
+            registration_id = db.execute("SELECT id FROM registrations").fetchone()["id"]
+        finally:
+            db.close()
+        response = self.client.get(f"/registrations/{registration_id}/admit-card")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Exam Student", response.get_data(as_text=True))
