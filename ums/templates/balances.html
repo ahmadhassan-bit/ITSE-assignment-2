@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Fee Balances{% endblock %}
+{% block content %}<h1>Invoice Balances</h1>{% if balances %}<table><tr><th>Invoice</th><th>Amount</th><th>Paid</th><th>Outstanding</th><th>Status</th></tr>{% for b in balances %}<tr><td>{{ b.invoice_id }}</td><td>PKR {{ "%.2f"|format(b.amount_paisa/100) }}</td><td>PKR {{ "%.2f"|format(b.paid_paisa/100) }}</td><td>PKR {{ "%.2f"|format(b.outstanding_paisa/100) }}</td><td>{{ b.status }}</td></tr>{% endfor %}</table>{% else %}<p>No invoices found.</p>{% endif %}{% endblock %}

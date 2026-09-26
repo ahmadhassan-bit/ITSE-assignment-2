@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Exam Registration{% endblock %}
+{% block content %}<h1>Examination Registration</h1><form method="post" action="{{ url_for('registrations.register') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label>Student <select name="student_id">{% for s in students %}{% if s.status == 'active' %}<option value="{{ s.id }}">{{ s.roll_number }} — {{ s.name }}</option>{% endif %}{% endfor %}</select></label>
+<label>Exam <select name="exam_id">{% for e in exams %}<option value="{{ e.id }}">{{ e.course_code }} — {{ e.title }} — {{ e.starts_at }}</option>{% endfor %}</select></label><button>Register</button></form>{% endblock %}
