@@ -1,0 +1,56 @@
+{
+  "projectKey": "SCRUM",
+  "projectName": "Ahmad and Saad",
+  "site": "https://ahmadthehassan.atlassian.net",
+  "boardId": 1,
+  "repository": "https://github.com/ahmadhassan-bit/ITSE-assignment-2",
+  "epics": {
+    "Student Management": "SCRUM-5",
+    "Fee Management": "SCRUM-6",
+    "Examination Management": "SCRUM-7"
+  },
+  "stories": {
+    "SM-01": "SCRUM-8",
+    "SM-02": "SCRUM-9",
+    "SM-03": "SCRUM-10",
+    "SM-04": "SCRUM-11",
+    "FM-01": "SCRUM-12",
+    "FM-02": "SCRUM-13",
+    "FM-03": "SCRUM-14",
+    "FM-04": "SCRUM-15",
+    "EM-01": "SCRUM-16",
+    "EM-02": "SCRUM-17",
+    "EM-03": "SCRUM-18",
+    "EM-04": "SCRUM-19"
+  },
+  "subtasks": {
+    "SM-01-1": "SCRUM-20",
+    "SM-01-2": "SCRUM-21",
+    "SM-02-1": "SCRUM-22",
+    "SM-02-2": "SCRUM-23",
+    "SM-03-1": "SCRUM-24",
+    "SM-03-2": "SCRUM-25",
+    "SM-04-1": "SCRUM-26",
+    "SM-04-2": "SCRUM-27",
+    "FM-01-1": "SCRUM-28",
+    "FM-01-2": "SCRUM-29",
+    "FM-02-1": "SCRUM-30",
+    "FM-02-2": "SCRUM-31",
+    "FM-03-1": "SCRUM-32",
+    "FM-03-2": "SCRUM-33",
+    "FM-04-1": "SCRUM-34",
+    "FM-04-2": "SCRUM-35",
+    "EM-01-1": "SCRUM-36",
+    "EM-01-2": "SCRUM-37",
+    "EM-02-1": "SCRUM-38",
+    "EM-02-2": "SCRUM-39",
+    "EM-03-1": "SCRUM-40",
+    "EM-03-2": "SCRUM-41",
+    "EM-04-1": "SCRUM-42",
+    "EM-04-2": "SCRUM-43"
+  },
+  "sprints": {
+    "1": 35,
+    "2": 36
+  }
+}

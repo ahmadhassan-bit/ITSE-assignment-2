@@ -1,0 +1,313 @@
+[
+  {
+    "id": "SM-01",
+    "epic": "Student Management",
+    "title": "Register a student",
+    "role": "student affairs officer",
+    "want": "register a student with a unique roll number",
+    "benefit": "fee and examination records refer to one reliable identity",
+    "fr": "The system shall register a student with a unique case-insensitive roll number, name, email and programme.",
+    "priority": "High",
+    "points": 3,
+    "owner": "Ahmad",
+    "sprint": 1,
+    "deps": [],
+    "criteria": [
+      "Valid roll number, name, email and programme create one active student with a stable numeric ID.",
+      "A roll number that already exists, ignoring letter case and surrounding spaces, is rejected without adding a record.",
+      "Missing required values or an invalid email are rejected with a field-specific message.",
+      "The new record remains retrievable after closing and reopening the database."
+    ],
+    "tasks": [
+      "Implement registration form, validation and persistent student storage",
+      "Test valid registration, invalid fields and duplicate roll numbers; review the code"
+    ]
+  },
+  {
+    "id": "SM-02",
+    "epic": "Student Management",
+    "title": "Search and view students",
+    "role": "student affairs officer",
+    "want": "search and view student records",
+    "benefit": "I can identify the correct student before handling fees or examinations",
+    "fr": "The system shall search students by roll number or name and display their identity, programme and status.",
+    "priority": "High",
+    "points": 2,
+    "owner": "Ahmad",
+    "sprint": 1,
+    "deps": [
+      "SM-01"
+    ],
+    "criteria": [
+      "An exact roll-number search returns the matching record.",
+      "A partial name search is case-insensitive and returns matching students.",
+      "A query without matches displays an empty-result message and does not change data.",
+      "The result shows ID, roll number, name, email, programme and active/inactive status."
+    ],
+    "tasks": [
+      "Implement student search and record display",
+      "Test matching, empty results and safe handling of special characters; review the code"
+    ]
+  },
+  {
+    "id": "SM-03",
+    "epic": "Student Management",
+    "title": "Update student contact and programme details",
+    "role": "student affairs officer",
+    "want": "correct a student's name, email or programme",
+    "benefit": "administrative records remain accurate",
+    "fr": "The system shall update a student's name, email and programme while preserving ID and roll number.",
+    "priority": "Medium",
+    "points": 3,
+    "owner": "Ahmad",
+    "sprint": 1,
+    "deps": [
+      "SM-01"
+    ],
+    "criteria": [
+      "Valid replacement name, email and programme are saved for the selected student.",
+      "The student's numeric ID and roll number remain unchanged.",
+      "An invalid email or blank required value rejects the update and preserves all previous values.",
+      "Updating a nonexistent student returns a clear not-found error and does not create a record."
+    ],
+    "tasks": [
+      "Implement validated updates and the student edit form",
+      "Test valid edits, atomic rejection and immutable identity; review the code"
+    ]
+  },
+  {
+    "id": "SM-04",
+    "epic": "Student Management",
+    "title": "Activate or deactivate a student",
+    "role": "student affairs officer",
+    "want": "change a student's active status",
+    "benefit": "exam registration can respect current student eligibility without deleting history",
+    "fr": "The system shall change student status between active and inactive without deleting linked records.",
+    "priority": "Medium",
+    "points": 2,
+    "owner": "Ahmad",
+    "sprint": 1,
+    "deps": [
+      "SM-01"
+    ],
+    "criteria": [
+      "An existing active student can be changed to inactive.",
+      "An inactive student can be restored to active.",
+      "Any status other than active or inactive is rejected without changing the record.",
+      "Changing status preserves the student's ID, details and existing linked records."
+    ],
+    "tasks": [
+      "Implement status changes and status controls",
+      "Test both transitions, invalid status and preservation of records; review the code"
+    ]
+  },
+  {
+    "id": "FM-01",
+    "epic": "Fee Management",
+    "title": "Generate a student fee invoice",
+    "role": "accounts officer",
+    "want": "create a fee invoice for an existing student",
+    "benefit": "the amount due and payment deadline are recorded consistently",
+    "fr": "The system shall create a positive-value PKR invoice with a due date and reference to an existing student.",
+    "priority": "High",
+    "points": 3,
+    "owner": "Partner",
+    "sprint": 1,
+    "deps": [
+      "SM-01"
+    ],
+    "criteria": [
+      "An existing student's ID, positive amount and valid due date create an invoice with a unique ID.",
+      "Amounts are stored as integer paisa and displayed to two decimal places.",
+      "Zero, negative, nonnumeric or more-than-two-decimal amounts are rejected without saving.",
+      "A nonexistent student or invalid date is rejected without creating an invoice."
+    ],
+    "tasks": [
+      "Implement invoice service, persistent storage and form",
+      "Test amounts, due dates and student references; review the code"
+    ]
+  },
+  {
+    "id": "FM-02",
+    "epic": "Fee Management",
+    "title": "Record a fee payment",
+    "role": "accounts officer",
+    "want": "record a payment against an invoice",
+    "benefit": "the university has an accurate record of collections",
+    "fr": "The system shall record a positive payment that does not exceed an invoice's outstanding balance.",
+    "priority": "High",
+    "points": 5,
+    "owner": "Partner",
+    "sprint": 1,
+    "deps": [
+      "FM-01"
+    ],
+    "criteria": [
+      "A positive payment not exceeding the outstanding balance creates a uniquely identified payment and reduces the balance once.",
+      "Zero, negative or overpayment amounts are rejected without changing payments or balance.",
+      "A nonexistent invoice is rejected with a clear error.",
+      "Payment creation and balance calculation use one database transaction so a failure cannot leave a partial payment."
+    ],
+    "tasks": [
+      "Implement transactional payment recording and validation",
+      "Test partial/full payment, overpayment and rollback behavior; review the code"
+    ]
+  },
+  {
+    "id": "FM-03",
+    "epic": "Fee Management",
+    "title": "View invoice balances",
+    "role": "accounts officer",
+    "want": "view paid and outstanding amounts for a student",
+    "benefit": "I can identify unpaid fees and answer student queries",
+    "fr": "The system shall calculate each invoice's paid amount, outstanding amount and payment status.",
+    "priority": "High",
+    "points": 2,
+    "owner": "Partner",
+    "sprint": 2,
+    "deps": [
+      "FM-01",
+      "FM-02"
+    ],
+    "criteria": [
+      "An unpaid invoice displays its full amount as outstanding.",
+      "After a partial payment, outstanding equals invoice amount minus recorded payments.",
+      "A fully paid invoice has zero outstanding and status Paid; partial and unpaid states are distinguished.",
+      "A student with no invoices receives a clear empty-state result without a database error."
+    ],
+    "tasks": [
+      "Implement balance queries and student fee summary",
+      "Test unpaid, partial, paid and empty states; review the code"
+    ]
+  },
+  {
+    "id": "FM-04",
+    "epic": "Fee Management",
+    "title": "View a payment receipt",
+    "role": "accounts officer",
+    "want": "view a printable receipt for a recorded payment",
+    "benefit": "the student receives proof of the payment recorded",
+    "fr": "The system shall display a printable receipt for an existing payment with its payment, invoice and student identifiers.",
+    "priority": "Medium",
+    "points": 2,
+    "owner": "Partner",
+    "sprint": 2,
+    "deps": [
+      "FM-02"
+    ],
+    "criteria": [
+      "A valid payment ID displays payment ID, invoice ID, student roll number/name, amount and timestamp.",
+      "The amount matches the stored payment exactly and is formatted in PKR.",
+      "A nonexistent payment ID shows a not-found response.",
+      "Viewing or printing the receipt does not create a new payment or change the outstanding balance."
+    ],
+    "tasks": [
+      "Implement receipt query and printable view",
+      "Test receipt fields, missing payments and read-only behavior; review the code"
+    ]
+  },
+  {
+    "id": "EM-01",
+    "epic": "Examination Management",
+    "title": "Create an examination session",
+    "role": "examination officer",
+    "want": "create an exam session with a course label, start/end time and room",
+    "benefit": "students can be registered for a clearly defined examination",
+    "fr": "The system shall create exam sessions and reject overlapping bookings of the same room.",
+    "priority": "High",
+    "points": 3,
+    "owner": "Ahmad",
+    "sprint": 2,
+    "deps": [],
+    "criteria": [
+      "A nonempty course code/title and room with valid start/end times create one session with a unique ID.",
+      "An end time at or before the start time is rejected.",
+      "Overlapping time intervals in the same room, ignoring room case, are rejected; adjacent sessions are permitted.",
+      "Invalid date/time inputs or blank required values are rejected without saving."
+    ],
+    "tasks": [
+      "Implement exam-session scheduling, room conflict checks and form",
+      "Test invalid intervals, room clashes and adjacent sessions; review the code"
+    ]
+  },
+  {
+    "id": "EM-02",
+    "epic": "Examination Management",
+    "title": "Register an active student for an exam",
+    "role": "examination officer",
+    "want": "register an active student for an examination session",
+    "benefit": "the candidate list contains valid and nonduplicated entries",
+    "fr": "The system shall register an active existing student in an existing exam and reject duplicates and student time clashes.",
+    "priority": "High",
+    "points": 3,
+    "owner": "Partner",
+    "sprint": 2,
+    "deps": [
+      "SM-01",
+      "SM-04",
+      "EM-01"
+    ],
+    "criteria": [
+      "An active existing student and an existing exam create one registration with a unique ID.",
+      "Inactive or nonexistent students and nonexistent exams are rejected.",
+      "A second registration for the same student and exam is rejected without adding a record.",
+      "A student cannot register for two examinations whose time intervals overlap."
+    ],
+    "tasks": [
+      "Implement candidate-registration service and form",
+      "Test eligibility, duplicates and student exam clashes; review the code"
+    ]
+  },
+  {
+    "id": "EM-03",
+    "epic": "Examination Management",
+    "title": "View the examination schedule",
+    "role": "examination officer",
+    "want": "view sessions in chronological order",
+    "benefit": "I can review the examination plan and communicate accurate details",
+    "fr": "The system shall list exam sessions by start time and optionally filter them by date.",
+    "priority": "Medium",
+    "points": 2,
+    "owner": "Ahmad",
+    "sprint": 2,
+    "deps": [
+      "EM-01"
+    ],
+    "criteria": [
+      "The unfiltered view lists all stored exam sessions in ascending start-time order.",
+      "A valid date filter returns sessions starting on that date only.",
+      "Each row includes exam ID, course code/title, start time, end time and room.",
+      "No matching sessions displays an empty-state message; an invalid date filter is rejected clearly."
+    ],
+    "tasks": [
+      "Implement chronological schedule and date filtering",
+      "Test ordering, date filters and empty results; review the code"
+    ]
+  },
+  {
+    "id": "EM-04",
+    "epic": "Examination Management",
+    "title": "Generate an examination admit card",
+    "role": "examination officer",
+    "want": "generate a printable admit card for a registered student",
+    "benefit": "the candidate can present a consistent examination entry document",
+    "fr": "The system shall display an admit card only for an existing registration belonging to an active student.",
+    "priority": "Medium",
+    "points": 3,
+    "owner": "Partner",
+    "sprint": 2,
+    "deps": [
+      "EM-02"
+    ],
+    "criteria": [
+      "An existing registration for an active student produces an admit card.",
+      "The card includes student name/roll number, registration ID, exam course, start/end time and room.",
+      "A missing registration or currently inactive student is rejected with an explanatory response.",
+      "Generating the card does not create or modify the student, exam or registration."
+    ],
+    "tasks": [
+      "Implement admit-card lookup and printable view",
+      "Test complete fields, missing registration and inactive student behavior; review the code"
+    ]
+  }
+]
