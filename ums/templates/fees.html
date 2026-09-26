@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Fee Management{% endblock %}
+{% block content %}<h1>Fee Management</h1>
+<form method="post" action="{{ url_for('fees_invoice_create') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label>Student <select name="student_id">{% for s in students %}<option value="{{ s.id }}">{{ s.roll_number }} — {{ s.name }}</option>{% endfor %}</select></label>
+<label>Amount (PKR) <input name="amount" required></label><label>Due date <input type="date" name="due_date" required></label><button>Create Invoice</button></form>
+<p>Use the invoice ID returned by the service to record payments and view receipts.</p>{% endblock %}

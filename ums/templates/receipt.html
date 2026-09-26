@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Payment Receipt{% endblock %}
+{% block content %}<article><h1>Payment Receipt</h1><p>Payment ID: {{ receipt.payment_id }}</p><p>Invoice ID: {{ receipt.invoice_id }}</p><p>Student: {{ receipt.roll_number }} — {{ receipt.name }}</p><p>Amount: PKR {{ "%.2f"|format(receipt.amount_paisa/100) }}</p><p>Recorded: {{ receipt.recorded_at }}</p><button onclick="window.print()">Print</button></article>{% endblock %}

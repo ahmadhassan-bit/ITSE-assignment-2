@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Examination Admit Card{% endblock %}
+{% block content %}<article><h1>Examination Admit Card</h1><p>Registration ID: {{ card.registration_id }}</p><p>Student: {{ card.name }}</p><p>Roll Number: {{ card.roll_number }}</p><p>Course: {{ card.course_code }} — {{ card.title }}</p><p>Time: {{ card.starts_at }} to {{ card.ends_at }}</p><p>Room: {{ card.room }}</p><button onclick="window.print()">Print</button></article>{% endblock %}
